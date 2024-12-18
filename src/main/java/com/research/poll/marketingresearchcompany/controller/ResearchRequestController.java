@@ -6,7 +6,9 @@ import com.research.poll.marketingresearchcompany.domain.ResearchRequest;
 import com.research.poll.marketingresearchcompany.domain.ResearchRequestStatus;
 import com.research.poll.marketingresearchcompany.dto.CreateQuestionDto;
 import com.research.poll.marketingresearchcompany.dto.CreateResearchRequestDto;
+import com.research.poll.marketingresearchcompany.dto.ResearchRequestDto;
 import com.research.poll.marketingresearchcompany.dto.UpdateResearchRequestDto;
+import com.research.poll.marketingresearchcompany.mapper.ResearchRequestMapper;
 import com.research.poll.marketingresearchcompany.repository.QuestionRepository;
 import com.research.poll.marketingresearchcompany.repository.ResearchRequestRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +30,12 @@ public class ResearchRequestController {
 
     private final ResearchRequestRepository researchRequestRepository;
     private final QuestionRepository questionRepository;
+    private final ResearchRequestMapper researchRequestMapper;
 
     @GetMapping
-    public List<ResearchRequest> getAllResearchRequests(@RequestParam ResearchRequestStatus status) {
-        return researchRequestRepository.findAllByStatus(status);
+    public List<ResearchRequestDto> getAllResearchRequests(@RequestParam ResearchRequestStatus status) {
+        List<ResearchRequest> researchRequests = researchRequestRepository.findAllByStatus(status);
+        return researchRequestMapper.toDtos(researchRequests);
     }
 
     @PostMapping

@@ -3,7 +3,9 @@ package com.research.poll.marketingresearchcompany.controller;
 import com.research.poll.marketingresearchcompany.domain.Answer;
 import com.research.poll.marketingresearchcompany.domain.Question;
 import com.research.poll.marketingresearchcompany.domain.Respondent;
+import com.research.poll.marketingresearchcompany.dto.AnswerDto;
 import com.research.poll.marketingresearchcompany.dto.CreateAnswerDto;
+import com.research.poll.marketingresearchcompany.mapper.AnswerMapper;
 import com.research.poll.marketingresearchcompany.repository.AnswerRepository;
 import com.research.poll.marketingresearchcompany.repository.PollRepository;
 import com.research.poll.marketingresearchcompany.repository.QuestionRepository;
@@ -27,6 +29,7 @@ public class AnswerController {
 
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
+    private final AnswerMapper answerMapper;
 
     @PostMapping
     public Long createAnswers(@RequestBody CreateAnswerDto createAnswerDto) {
@@ -42,16 +45,8 @@ public class AnswerController {
 
     @GetMapping
     public List<AnswerDto> getAnswers(@RequestParam Long respondentId) {
-        return answerRepository.findAllByRespondentRespondentId(respondentId)
-                .stream()
-                .map(answer -> AnswerDto.builder().answerDesc(answer.getAnswerDesc()).build())
-                .toList();
-    }
-
-    @Data
-    @Builder
-    static class AnswerDto {
-        private String answerDesc;
+        List<Answer> answers = answerRepository.findAllByRespondentRespondentId(respondentId);
+        return answerMapper.toDtos(answers);
     }
 
 }

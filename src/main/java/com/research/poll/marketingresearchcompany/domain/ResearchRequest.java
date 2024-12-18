@@ -26,7 +26,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "research_request")
-//@Data
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
